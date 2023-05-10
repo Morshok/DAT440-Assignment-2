@@ -1,14 +1,15 @@
 import numpy as np
 
 class Agent(object):
-    def __init__(self, state_dim, action_space):
+    def __init__(self, state_space, action_space):
         self.action_space = action_space
+        self.state_space = state_space
         self.epsilon = 0.05
         self.gamma = 0.95
         self.alpha = 5/1000
-        self.Q = np.zeros(shape = (state_dim, action_space.n))
+        self.Q = np.zeros(shape = (state_space.n, action_space.n))
 
-        for state in range(state_dim):
+        for state in range(state_space.n):
             for action in range(action_space.n):
                 self.Q[state, action] = self.action_space.sample()
 
@@ -41,3 +42,6 @@ class Agent(object):
             self.current_state = observation
 
         return action
+    
+    def get_Q_tables(self):
+        return [self.Q]

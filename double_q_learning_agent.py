@@ -41,8 +41,6 @@ class Agent(object):
             self.current_action = np.argmax(Q[observation,:])
         
         return self.current_action
-    
-    def visualize_Q_table(self):
-        plt.imshow(self.Q1)
-        plt.imshow(self.Q2)
-        plt.show()
+
+    def get_Q_tables(self):
+        return [self.Q1, self.Q2]

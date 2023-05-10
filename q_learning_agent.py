@@ -37,6 +37,5 @@ class Agent(object):
         self.current_action = action
         return action
     
-    def visualize_Q_table(self):
-        plt.imshow(self.Q)
-        plt.show()
+    def get_Q_tables(self):
+        return [self.Q]
