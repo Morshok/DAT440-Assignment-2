@@ -19,10 +19,13 @@ class Agent(object):
 
 
     def observe(self, observation, next_action, reward, done):
+        expected_value = np.mean(self.Q[observation,:])
         self.Q[self.current_state, self.current_action] += self.alpha * (reward + self.gamma * self.Q[observation, next_action] - self.Q[self.current_state, self.current_action])
 
         if(done):
-            return;
+            self.Q[self.current_state, self.current_action] += self.alpha * (reward - self.Q[self.current_state, self.current_action])
+        else:
+            self.Q[self.current_state, self.current_action] += self.alpha * (reward + self.gamma * expected_value - self.Q[self.current_state, self.current_action])
 
         self.current_state = observation
         self.current_action = next_action

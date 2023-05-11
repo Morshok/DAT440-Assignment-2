@@ -15,7 +15,7 @@ agentfile = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(agentfile)
 
 try:
-    env = gym.make(args.env)
+    env = gym.make(args.env, render_mode="human")
     print("Loaded ", args.env)
 except:
     file_name, env_name = args.env.split(":")
@@ -23,7 +23,7 @@ except:
         id=env_name + "-v0",
         entry_point=args.env,
     )
-    env = gym.make(env_name + "-v0")
+    env = gym.make(env_name + "-v0", render_mode="human")
     print("Loaded", args.env)
 
 rewards = []
@@ -42,7 +42,7 @@ def run_sarsa_experiment():
         action1 = agent.act(observation1)
         episode_rewards = []
         for iteration in range(num_iterations): 
-            #env.render()
+            env.render()
             observation2, reward, done, truncated, info = env.step(action1)
             action2 = agent.act(observation2)
             rewards.append(reward)
@@ -59,7 +59,7 @@ def run_q_learning_experiment():
         observation, info = env.reset()
         episode_rewards = []
         for iteration in range(num_iterations): 
-            #env.render()
+            env.render()
             action = agent.act(observation)
             observation, reward, done, truncated, info = env.step(action)
             rewards.append(reward)
