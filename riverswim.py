@@ -10,7 +10,7 @@ class RiverSwim(gym.Env):
         self.large = large  # payout at end of chain for 'forwards' action
         self.state = 0  # Start at beginning of the chain
         self.action_space = spaces.Discrete(2)
-        self.observation_space = spaces.Discrete(self.n)     
+        self.observation_space = spaces.Discrete(self.n)
 
     def step(self, action):
         assert self.action_space.contains(action)
@@ -31,6 +31,7 @@ class RiverSwim(gym.Env):
                 self.state = np.random.choice([self.state-1, self.state], p=[0.4, 0.6])
                 if self.state == self.n-1:
                     reward = self.large
+
         done = False
         return self.state, reward, done, False, {}
 
