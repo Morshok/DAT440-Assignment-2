@@ -31,9 +31,9 @@ class RiverSwim(gym.Env):
                 self.state = np.random.choice([self.state-1, self.state], p=[0.4, 0.6])
                 if self.state == self.n-1:
                     reward = self.large
-
         done = False
         return self.state, reward, done, False, {}
+
 
     def reset(self, seed=None, options=None):
         self.state = 0

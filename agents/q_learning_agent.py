@@ -2,11 +2,14 @@ import numpy as np
 
 class Agent(object):
     def __init__(self, alpha, gamma, epsilon, random_init, env, terminal_states=None):
-        self.alpha = alpha
-        self.gamma = gamma
+        self.alpha = alpha      
+        self.gamma = gamma      
         self.epsilon = epsilon
+
         self.env = env
         self.terminal_states = terminal_states
+
+        self.accumulated_rewards = 0
 
         self.__init_Q_table(random_init)
 
@@ -19,12 +22,17 @@ class Agent(object):
                     if(self.terminal_states == None or state not in self.terminal_states): 
                         self.Q[state, action] = self.env.action_space.sample()
 
+    def observe(self, state1, state2, action, reward, done):
+        self.accumulated_rewards += reward
 
-    def observe(self, state1, state2, action, reward):
-        self.Q[state1, action] += self.alpha * (reward + self.gamma * self.Q[state2, action] - self.Q[state1, action])
+        if(done):
+            self.Q[state1, action] += self.alpha * reward
+        else:
+            self.Q[state1, action] += self.alpha * (reward + self.gamma * np.argmax(self.Q[state2, :]) - self.Q[state1, action])
 
     def act(self, observation):
         action = 0
+
         if(np.random.uniform(0, 1) < self.epsilon):
             action = self.env.action_space.sample()
         else:
@@ -32,5 +40,8 @@ class Agent(object):
 
         return action
     
+    def get_accumulated_rewards(self):
+        return self.accumulated_rewards
+    
     def get_Q_table(self):
-        return [self.Q]
+        return self.Q
