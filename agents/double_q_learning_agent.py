@@ -35,9 +35,9 @@ class Agent(object):
                 self.Q2[state1, action] += self.alpha * reward
         else:
             if(np.random.uniform(0, 1) < 0.5):
-                self.Q1[state1, action] += self.alpha * (reward + self.gamma * np.argmax(self.Q2[state2, :]) - self.Q1[state1, action])
+                self.Q1[state1, action] += self.alpha * (reward + self.gamma * self.Q2[state2, np.argmax(self.Q1[state2, :])] - self.Q1[state1, action])
             else:
-                self.Q2[state1, action] += self.alpha * (reward + self.gamma * np.argmax(self.Q1[state2, :]) - self.Q2[state1, action])
+                self.Q2[state1, action] += self.alpha * (reward + self.gamma * self.Q1[state2, np.argmax(self.Q2[state2, :])] - self.Q2[state1, action])
 
     def act(self, observation):
         Q = ((self.Q1 + self.Q2) / 2)   # The average of both Q tables
